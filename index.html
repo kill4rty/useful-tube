@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My YouTube Hub</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -20,20 +18,9 @@
             text-align: center;
             border-bottom: 1px solid #272727;
         }
-        header h1 {
-            margin: 0 0 4px 0;
-            font-size: 22px;
-        }
-        header p {
-            margin: 0;
-            color: #aaa;
-            font-size: 13px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        header h1 { margin: 0 0 4px 0; font-size: 22px; }
+        header p { margin: 0; color: #aaa; font-size: 13px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
         .setup-box {
             background: #1a1a1a;
             border: 1px solid #303030;
@@ -62,9 +49,7 @@
             color: #777;
             line-height: 1.5;
         }
-        .setup-box a {
-            color: #3ea6ff;
-        }
+        .setup-box a { color: #3ea6ff; }
         .search-row {
             display: flex;
             gap: 8px;
@@ -81,9 +66,7 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        .search-row input:focus {
-            border-color: #3ea6ff;
-        }
+        .search-row input:focus { border-color: #3ea6ff; }
         .search-row button {
             padding: 0 22px;
             border-radius: 24px;
@@ -96,9 +79,7 @@
             transition: background 0.2s;
             white-space: nowrap;
         }
-        .search-row button:hover {
-            background: #65b8ff;
-        }
+        .search-row button:hover { background: #65b8ff; }
         #player-area {
             margin-bottom: 24px;
             display: none;
@@ -136,9 +117,7 @@
             aspect-ratio: 16/9;
             object-fit: cover;
         }
-        .card-info {
-            padding: 10px 12px;
-        }
+        .card-info { padding: 10px 12px; }
         .card-info .title {
             font-size: 13.5px;
             line-height: 1.35;
@@ -160,12 +139,8 @@
             font-size: 14px;
             grid-column: 1 / -1;
         }
-        .status.error {
-            color: #ff6b6b;
-        }
-        .status.success {
-            color: #69db7c;
-        }
+        .status.error { color: #ff6b6b; }
+        .status.success { color: #69db7c; }
         #spotify-embed iframe {
             width: 100%;
             border-radius: 12px;
@@ -197,6 +172,34 @@
             width: 100%;
             height: 600px;
         }
+        .bloxd-toolbar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            background: #1a1a1a;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #303030;
+        }
+        .bloxd-toolbar button {
+            background: #3ea6ff;
+            border: none;
+            color: #0f0f0f;
+            padding: 6px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .bloxd-toolbar button:hover { background: #65b8ff; }
+        .bloxd-toolbar .status-msg {
+            color: #aaa;
+            font-size: 13px;
+            margin-left: auto;
+        }
         .bloxd-note {
             font-size: 12px;
             color: #777;
@@ -211,39 +214,24 @@
             font-size: 14px;
             border: 1px dashed #303030;
         }
-        .embed-placeholder a {
-            color: #3ea6ff;
-        }
-
+        .embed-placeholder a { color: #3ea6ff; }
         @media (max-width: 600px) {
-            .search-row {
-                flex-wrap: wrap;
-            }
-            .search-row input {
-                min-width: 0;
-            }
-            .search-row button {
-                padding: 10px 18px;
-                flex: 1;
-            }
-            #results {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-            .bloxd-wrapper iframe {
-                height: 400px;
-            }
+            .search-row { flex-wrap: wrap; }
+            .search-row input { min-width: 0; }
+            .search-row button { padding: 10px 18px; flex: 1; }
+            #results { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .bloxd-wrapper iframe { height: 400px; }
+            .bloxd-toolbar { flex-direction: column; align-items: stretch; }
+            .bloxd-toolbar .status-msg { margin-left: 0; text-align: center; }
         }
     </style>
 </head>
 <body>
-
     <header>
         <h1>🎬 My YouTube Hub</h1>
         <p>Search · Watch · Explore</p>
     </header>
-
     <div class="container">
-
         <!-- API KEY -->
         <div class="setup-box" id="setup-box">
             <label for="api-key">🔑 YouTube Data API Key</label>
@@ -287,9 +275,7 @@
             <button id="spotify-btn">Load</button>
         </div>
         <div id="spotify-embed">
-            <div class="embed-placeholder">
-                Paste a Spotify link above to embed the player.
-            </div>
+            <div class="embed-placeholder">Paste a Spotify link above to embed the player.</div>
         </div>
 
         <hr class="section-divider" />
@@ -301,23 +287,24 @@
             <button id="twitch-btn">Load</button>
         </div>
         <div id="twitch-embed">
-            <div class="embed-placeholder">
-                Enter a channel name above or click "Load" to see top live streams.
-            </div>
+            <div class="embed-placeholder">Enter a channel name above or click "Load" to see top live streams.</div>
         </div>
 
         <hr class="section-divider" />
 
-        <!-- BLOXD – direct iframe (no proxy) -->
-        <h2 class="section-title">🧱 Bloxd</h2>
+        <!-- BLOXD – AUTO PROXY CYCLING -->
+        <h2 class="section-title">🧱 Bloxd (Unblocked)</h2>
+        <div class="bloxd-toolbar">
+            <button id="bloxd-next-btn">🔄 Try next proxy</button>
+            <span class="status-msg" id="bloxd-status">Loading proxies…</span>
+        </div>
         <div class="bloxd-wrapper">
-            <iframe src="https://bloxd.io" allowfullscreen></iframe>
+            <iframe id="bloxd-iframe" src="" allowfullscreen></iframe>
         </div>
         <p class="bloxd-note">
-            ⚠️ If the game doesn't load, it may be blocked by your network or the site itself.
-            <a href="https://bloxd.io" target="_blank">Click here to open Bloxd in a new tab</a>.
+            ⚠️ Proxies are tried automatically. If the game doesn't load, click <strong>"Try next proxy"</strong>.
+            If none work, you'll need to <a href="https://github.com/MercuryWorkshop/scramjet" target="_blank">self‑host Scramjet</a> on a custom domain.
         </p>
-
     </div>
 
     <script>
@@ -339,21 +326,79 @@
         const twitchBtn = document.getElementById('twitch-btn');
         const twitchEmbed = document.getElementById('twitch-embed');
 
+        // ─── Bloxd proxy cycling ─────────────────────────────────────
+        const bloxdIframe = document.getElementById('bloxd-iframe');
+        const bloxdNextBtn = document.getElementById('bloxd-next-btn');
+        const bloxdStatus = document.getElementById('bloxd-status');
+
+        const BLOXD_TARGET = 'https://bloxd.io';
+
+        // List of proxies – add/remove/edit as needed
+        const PROXY_LIST = [
+            'https://ultraviolet-proxy.sadzurami.ml/service/?url=',
+            'https://uv.rudz.xyz/service/?url=',
+            'https://scramjet-proxy.vercel.app/service/?url=',
+            'https://ultraviolet-proxy.jacoblin.xyz/service/?url=',
+            'https://anura-proxy.vercel.app/service/?url=',
+            'https://corsproxy.io/?url='
+        ];
+
+        let currentProxyIndex = -1;
+
+        function buildProxyUrl(base) {
+            let full;
+            if (base.includes('?url=') || base.includes('&url=')) {
+                if (base.endsWith('?url=') || base.endsWith('&url=')) {
+                    full = base + encodeURIComponent(BLOXD_TARGET);
+                } else {
+                    const sep = base.includes('?') ? '&' : '?';
+                    full = base + sep + 'url=' + encodeURIComponent(BLOXD_TARGET);
+                }
+            } else {
+                const sep = base.includes('?') ? '&' : '?';
+                full = base + sep + 'url=' + encodeURIComponent(BLOXD_TARGET);
+            }
+            return full;
+        }
+
+        function loadBloxdWithProxy(index) {
+            if (index >= PROXY_LIST.length) {
+                bloxdStatus.textContent = '❌ All proxies failed. Try self‑hosting.';
+                bloxdIframe.src = '';
+                return;
+            }
+            const proxyBase = PROXY_LIST[index];
+            const fullUrl = buildProxyUrl(proxyBase);
+            bloxdIframe.src = fullUrl;
+            bloxdStatus.textContent = `🔄 Trying proxy ${index+1}/${PROXY_LIST.length}...`;
+            currentProxyIndex = index;
+        }
+
+        function tryNextProxy() {
+            const next = currentProxyIndex + 1;
+            loadBloxdWithProxy(next);
+        }
+
+        // Auto‑start with first proxy
+        window.addEventListener('load', () => {
+            loadBloxdWithProxy(0);
+        });
+
+        bloxdNextBtn.addEventListener('click', tryNextProxy);
+
+        // ─── YouTube, Spotify, Twitch (full functions) ──────────────
         // ─── state ──────────────────────────────────────────────────
         let currentQuery = '';
         let nextPageToken = '';
 
-        // ─── helpers ────────────────────────────────────────────────
         function escapeHtml(str) {
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         }
-
         function showStatus(msg, type = '') {
             results.innerHTML = `<div class="status ${type}">${msg}</div>`;
         }
-
         // ─── YouTube ────────────────────────────────────────────────
         function appendCards(items) {
             items.forEach(item => {
@@ -361,7 +406,6 @@
                 const title = item.snippet.title;
                 const channel = item.snippet.channelTitle;
                 const thumb = item.snippet.thumbnails.medium.url;
-
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -375,7 +419,6 @@
                 results.appendChild(card);
             });
         }
-
         async function runSearch(pageToken) {
             const key = apiKeyInput.value.trim();
             if (!key) {
@@ -383,7 +426,6 @@
                 loadMoreBtn.style.display = 'none';
                 return;
             }
-
             const url = new URL('https://www.googleapis.com/youtube/v3/search');
             url.searchParams.set('part', 'snippet');
             url.searchParams.set('type', 'video');
@@ -391,26 +433,21 @@
             url.searchParams.set('q', currentQuery);
             url.searchParams.set('key', key);
             if (pageToken) url.searchParams.set('pageToken', pageToken);
-
             try {
                 const res = await fetch(url);
                 const data = await res.json();
-
                 if (data.error) {
                     showStatus(`❌ ${escapeHtml(data.error.message || 'Something went wrong.')}`, 'error');
                     loadMoreBtn.style.display = 'none';
                     return;
                 }
-
                 if (!data.items || data.items.length === 0) {
                     if (!pageToken) showStatus('😕 No results found.', '');
                     loadMoreBtn.style.display = 'none';
                     return;
                 }
-
                 if (!pageToken) results.innerHTML = '';
                 appendCards(data.items);
-
                 nextPageToken = data.nextPageToken || '';
                 loadMoreBtn.style.display = nextPageToken ? 'inline-block' : 'none';
             } catch (err) {
@@ -418,7 +455,6 @@
                 loadMoreBtn.style.display = 'none';
             }
         }
-
         function doSearch() {
             const query = searchInput.value.trim();
             if (!query) return;
@@ -428,7 +464,6 @@
             loadMoreBtn.style.display = 'none';
             runSearch();
         }
-
         function loadMore() {
             if (!nextPageToken) return;
             loadMoreBtn.textContent = '⏳ Loading…';
@@ -436,14 +471,12 @@
                 loadMoreBtn.textContent = 'Load more';
             });
         }
-
         function playVideo(videoId, title) {
             player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
             playerTitle.textContent = title;
             playerArea.style.display = 'block';
             playerArea.scrollIntoView({ behavior: 'smooth' });
         }
-
         // ─── Spotify ────────────────────────────────────────────────
         function loadSpotify() {
             const raw = spotifyInput.value.trim();
@@ -451,54 +484,64 @@
                 spotifyEmbed.innerHTML = `<div class="embed-placeholder">📎 Paste a Spotify link first.</div>`;
                 return;
             }
-
-            let id = '';
-            let type = 'track';
-
-            const match =
-                raw.match(/spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/) ||
-                raw.match(/spotify:([a-zA-Z0-9]+):([a-zA-Z0-9]+)/);
-
+            let id = '', type = 'track';
+            const match = raw.match(/spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/) ||
+                          raw.match(/spotify:([a-zA-Z0-9]+):([a-zA-Z0-9]+)/);
             if (match) {
                 type = match[1];
                 id = match[2];
+            } else if (/^[a-zA-Z0-9]{22}$/.test(raw)) {
+                id = raw;
+                type = 'track';
             } else {
-                if (/^[a-zA-Z0-9]{22}$/.test(raw)) {
-                    id = raw;
-                    type = 'track';
-                } else {
-                    spotifyEmbed.innerHTML =
-                        `<div class="embed-placeholder">❌ Couldn't parse that link. Try a Spotify track, album, or playlist URL.</div>`;
-                    return;
-                }
+                spotifyEmbed.innerHTML = `<div class="embed-placeholder">❌ Couldn't parse that link. Try a Spotify track, album, or playlist URL.</div>`;
+                return;
             }
-
             const embedUrl = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
             spotifyEmbed.innerHTML = `
                 <iframe src="${embedUrl}" width="100%" height="152" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 <p style="font-size:12px; color:#666; margin-top:6px;">🎵 ${type.charAt(0).toUpperCase() + type.slice(1)} embedded — click play to listen.</p>
             `;
         }
-
         // ─── Twitch ──────────────────────────────────────────────────
-        async function loadTwitch() {
+        function loadTwitch() {
             const channel = twitchInput.value.trim().toLowerCase();
-
             if (channel) {
                 if (!/^[a-zA-Z0-9_]{4,25}$/.test(channel)) {
-                    twitchEmbed.innerHTML =
-                        `<div class="embed-placeholder" style="color:#ff6b6b;">⚠️ Invalid channel name. Use only letters, numbers, underscores (4-25 chars).</div>`;
+                    twitchEmbed.innerHTML = `<div class="embed-placeholder" style="color:#ff6b6b;">⚠️ Invalid channel name. Use only letters, numbers, underscores (4-25 chars).</div>`;
                     return;
                 }
                 twitchEmbed.innerHTML = `
                     <iframe src="https://player.twitch.tv/?channel=${encodeURIComponent(channel)}&parent=${encodeURIComponent(window.location.hostname)}" allowfullscreen></iframe>
                     <p style="font-size:13px; color:#999; margin-top:6px;">🎮 Watching <strong>${escapeHtml(channel)}</strong> — <a href="https://twitch.tv/${encodeURIComponent(channel)}" target="_blank" style="color:#3ea6ff;">open in Twitch</a></p>
                 `;
-                return;
+            } else {
+                twitchEmbed.innerHTML = `
+                    <div style="background:#1a1a1a; border-radius:10px; padding:20px; text-align:center; border:1px solid #303030;">
+                        <p style="color:#999; margin-bottom:12px;">👀 Browse top live streams on Twitch</p>
+                        <a href="https://twitch.tv/directory" target="_blank" style="display:inline-block; padding:10px 24px; background:#6441a5; color:#fff; border-radius:24px; text-decoration:none; font-weight:600;">Open Twitch Directory</a>
+                        <p style="font-size:12px; color:#666; margin-top:12px;">Or enter a channel name above to embed a specific stream.</p>
+                    </div>
+                `;
             }
-
-            // No channel → show directory
-            twitchEmbed.innerHTML = `
-                <div style="background:#1a1a1a; border-radius:10px; padding:20px; text-align:center; border:1px solid #303030;">
-                    <p style="color:#999; margin-bottom:12px;">👀 Browse top live streams on Twitch</p>
-                    <a href="https://twitch.tv/directory" target="_blank" style="display:inline-block; padding:10px 24px; background:#6441a5; color:#fff; border-radius:24px
+        }
+        // ─── event bindings ──────────────────────────────────────────
+        searchBtn.addEventListener('click', doSearch);
+        searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSearch(); });
+        loadMoreBtn.addEventListener('click', loadMore);
+        spotifyBtn.addEventListener('click', loadSpotify);
+        spotifyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loadSpotify(); });
+        twitchBtn.addEventListener('click', loadTwitch);
+        twitchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') loadTwitch(); });
+        // ─── restore API key ────────────────────────────────────────
+        (function restoreKey() {
+            const saved = sessionStorage.getItem('yt_api_key');
+            if (saved) apiKeyInput.value = saved;
+            apiKeyInput.addEventListener('input', () => {
+                sessionStorage.setItem('yt_api_key', apiKeyInput.value.trim());
+            });
+        })();
+        console.log('🎬 YouTube Hub loaded — Bloxd proxy cycling active.');
+    </script>
+</body>
+</html>
