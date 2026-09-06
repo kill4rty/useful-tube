@@ -177,11 +177,6 @@
             border: none;
             border-radius: 10px;
         }
-        .embed-error {
-            color: #ff6b6b;
-            font-size: 13px;
-            margin-top: 8px;
-        }
         .section-divider {
             border: none;
             border-top: 1px solid #272727;
@@ -356,19 +351,19 @@
 
         <hr class="section-divider" />
 
-        <!-- BLOXD – Ultraviolet proxy (working default) -->
+        <!-- BLOXD – with working proxy -->
         <h2 class="section-title">🧱 Bloxd</h2>
         <div class="bloxd-toolbar">
             <span style="color:#aaa; font-size:13px;">Ultraviolet proxy URL:</span>
             <input type="text" id="bloxd-proxy-input" value="https://uv.rudz.xyz/service/?url=" placeholder="https://your-uv-instance/service/?url=" />
             <button id="bloxd-load-btn">Load</button>
         </div>
-        <div class="bloxd-wrapper" id="bloxd-wrapper">
+        <div class="bloxd-wrapper">
             <iframe id="bloxd-iframe" src="" allowfullscreen></iframe>
         </div>
         <p class="bloxd-note">
-            ⚠️ The iframe loads <strong>bloxd.io</strong> through the Ultraviolet proxy URL above.
-            The default <code>https://uv.rudz.xyz/service/?url=</code> is known to work.
+            ⚠️ The iframe loads <strong>bloxd.io</strong> through the proxy above.
+            Default <code>https://uv.rudz.xyz/service/?url=</code> is known to work.
             If it fails, try another public instance like <code>https://ultraviolet-proxy.sadzurami.ml/service/?url=</code>.
         </p>
 
@@ -393,7 +388,7 @@
         const twitchBtn = document.getElementById('twitch-btn');
         const twitchEmbed = document.getElementById('twitch-embed');
 
-        // ─── Bloxd with Ultraviolet proxy ──────────────────────────
+        // ─── Bloxd proxy ────────────────────────────────────────────
         const bloxdIframe = document.getElementById('bloxd-iframe');
         const bloxdProxyInput = document.getElementById('bloxd-proxy-input');
         const bloxdLoadBtn = document.getElementById('bloxd-load-btn');
@@ -403,26 +398,26 @@
         function loadBloxd() {
             let proxyBase = bloxdProxyInput.value.trim();
             if (!proxyBase) {
-                // fallback to known working one
                 proxyBase = 'https://uv.rudz.xyz/service/?url=';
                 bloxdProxyInput.value = proxyBase;
             }
-            // Construct the full proxy URL
-            // Many Ultraviolet proxies expect ?url= or &url=
+
+            // Ensure the proxy URL ends with a proper query for 'url'
+            // If it already contains 'url=' or '&url=', we just append the encoded target.
+            // Otherwise, we add ?url= or &url=
             let fullUrl;
             if (proxyBase.includes('?url=') || proxyBase.includes('&url=')) {
-                // already has a url param, just append the target with proper encoding
-                // but we need to make sure the target is encoded
-                // if proxyBase ends with ?url= or &url=, we can append directly
+                // Already has a url param; append encoded target (if not already there)
+                // We'll just append with & if needed, but we also need to handle if it ends with ?url= or &url=
                 if (proxyBase.endsWith('?url=') || proxyBase.endsWith('&url=')) {
                     fullUrl = proxyBase + encodeURIComponent(BLOXD_TARGET);
                 } else {
-                    // has some other format, we'll add &url= or ?url=
+                    // Add &url= or ?url=
                     const separator = proxyBase.includes('?') ? '&' : '?';
                     fullUrl = proxyBase + separator + 'url=' + encodeURIComponent(BLOXD_TARGET);
                 }
             } else {
-                // no url param, add one
+                // No url param at all
                 const separator = proxyBase.includes('?') ? '&' : '?';
                 fullUrl = proxyBase + separator + 'url=' + encodeURIComponent(BLOXD_TARGET);
             }
@@ -434,7 +429,7 @@
             if (e.key === 'Enter') loadBloxd();
         });
 
-        // Load initially with default
+        // Load initially
         window.addEventListener('load', () => {
             loadBloxd();
         });
@@ -635,7 +630,7 @@
             });
         })();
 
-        console.log('🎬 YouTube Hub loaded — Bloxd uses Ultraviolet proxy (uv.rudz.xyz).');
+        console.log('🎬 YouTube Hub loaded — Bloxd uses Ultraviolet proxy.');
     </script>
 
 </body>
