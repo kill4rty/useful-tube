@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unblocked Games Hub</title>
   <style>
     /* ── Reset & base ── */
@@ -120,6 +120,7 @@
       font-weight: 500;
       transition: 0.2s;
       border: 1px solid transparent;
+      user-select: none;
     }
     .tab:hover {
       background: #334155;
@@ -140,12 +141,22 @@
       display: block;
     }
     @keyframes fade {
-      from { opacity: 0.4; transform: translateY(4px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0.4;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ── Game grid ── */
-    #results, #action-results, #puzzle-results, #sports-results, #search-results {
+    #results,
+    #action-results,
+    #puzzle-results,
+    #sports-results,
+    #search-results {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1.25rem;
@@ -166,11 +177,18 @@
       border-color: #38bdf8;
       box-shadow: 0 8px 20px rgba(56, 189, 248, 0.15);
     }
-    .game-card img {
+    .game-card .thumbnail {
       width: 100%;
       height: 130px;
-      object-fit: cover;
       background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #334155;
     }
     .game-card .info {
       padding: 0.75rem 1rem 1rem;
@@ -279,341 +297,388 @@
 
     /* ── Responsive ── */
     @media (max-width: 640px) {
-      .setup-box { flex-direction: column; align-items: stretch; }
-      .setup-box small { margin-left: 0; max-width: 100%; }
-      header h1 { font-size: 1.8rem; }
+      .setup-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .setup-box small {
+        margin-left: 0;
+        max-width: 100%;
+      }
+      header h1 {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>🎮 Unblocked Games Hub</h1>
+    <p>Play your favorite games with proxy support</p>
+  </header>
 
-<header>
-  <h1>🎮 Unblocked Games Hub</h1>
-  <p>Play your favorite games with proxy support</p>
-</header>
-
-<div class="container">
-
-  <!-- Proxy Selector -->
-  <div class="setup-box">
-    <label for="proxy-select">🔌 Proxy Service</label>
-    <select id="proxy-select">
-      <option value="none">No Proxy (Direct)</option>
-      <option value="hide-me">Hide.me Web Proxy</option>
-      <option value="holy-unblocker">Holy Unblocker</option>
-      <option value="ultraviolet">Ultraviolet</option>
-      <option value="iproyal">IPRoyal</option>
-      <option value="4everproxy">4everProxy</option>
-    </select>
-    <span id="proxy-status">● Direct</span>
-    <small>
-      Proxies help bypass network restrictions. Some games may require specific proxies.
-      <a href="https://macrolorblx.com/best-unblocked-games-web-proxies-2026-edition/" target="_blank">Learn more</a>
-    </small>
-  </div>
-
-  <!-- Tabs -->
-  <div class="tabs">
-    <div class="tab active" data-tab="popular">🔥 Popular</div>
-    <div class="tab" data-tab="action">⚔️ Action</div>
-    <div class="tab" data-tab="puzzle">🧩 Puzzle</div>
-    <div class="tab" data-tab="sports">⚽ Sports</div>
-    <div class="tab" data-tab="search">🔍 Search</div>
-  </div>
-
-  <!-- Tab Contents -->
-  <div id="popular-tab" class="tab-content active">
-    <div id="results"></div>
-  </div>
-  <div id="action-tab" class="tab-content">
-    <div id="action-results"></div>
-  </div>
-  <div id="puzzle-tab" class="tab-content">
-    <div id="puzzle-results"></div>
-  </div>
-  <div id="sports-tab" class="tab-content">
-    <div id="sports-results"></div>
-  </div>
-  <div id="search-tab" class="tab-content">
-    <div class="search-row">
-      <input type="text" id="search-input" placeholder="Search for games...">
-      <button id="search-btn">Search</button>
+  <div class="container">
+    <!-- Proxy Selector -->
+    <div class="setup-box">
+      <label for="proxy-select">🔌 Proxy Service</label>
+      <select id="proxy-select">
+        <option value="none">No Proxy (Direct)</option>
+        <option value="hide-me">Hide.me Web Proxy</option>
+        <option value="holy-unblocker">Holy Unblocker</option>
+        <option value="ultraviolet">Ultraviolet</option>
+        <option value="iproyal">IPRoyal</option>
+        <option value="4everproxy">4everProxy</option>
+      </select>
+      <span id="proxy-status">● Direct</span>
+      <small>
+        Proxies help bypass network restrictions. Some games may require specific
+        proxies.
+        <a
+          href="https://macrolorblx.com/best-unblocked-games-web-proxies-2026-edition/"
+          target="_blank"
+          >Learn more</a
+        >
+      </small>
     </div>
-    <div id="search-results"></div>
-  </div>
 
-  <!-- Game Area (hidden until a game is clicked) -->
-  <div id="game-area">
-    <div class="game-header">
-      <span id="game-title">Game Title</span>
-      <button id="close-game">✕</button>
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-tab="popular">🔥 Popular</div>
+      <div class="tab" data-tab="action">⚔️ Action</div>
+      <div class="tab" data-tab="puzzle">🧩 Puzzle</div>
+      <div class="tab" data-tab="sports">⚽ Sports</div>
+      <div class="tab" data-tab="search">🔍 Search</div>
     </div>
-    <iframe id="game-iframe" src="about:blank" allowfullscreen></iframe>
+
+    <!-- Tab Contents -->
+    <div id="popular-tab" class="tab-content active">
+      <div id="results"></div>
+    </div>
+    <div id="action-tab" class="tab-content">
+      <div id="action-results"></div>
+    </div>
+    <div id="puzzle-tab" class="tab-content">
+      <div id="puzzle-results"></div>
+    </div>
+    <div id="sports-tab" class="tab-content">
+      <div id="sports-results"></div>
+    </div>
+    <div id="search-tab" class="tab-content">
+      <div class="search-row">
+        <input type="text" id="search-input" placeholder="Search for games..." />
+        <button id="search-btn">Search</button>
+      </div>
+      <div id="search-results"></div>
+    </div>
+
+    <!-- Game Area -->
+    <div id="game-area">
+      <div class="game-header">
+        <span id="game-title">Game Title</span>
+        <button id="close-game">✕</button>
+      </div>
+      <iframe id="game-iframe" src="about:blank" allowfullscreen></iframe>
+    </div>
   </div>
 
-</div>
+  <script>
+    (function () {
+      'use strict';
 
-<script>
-  (function() {
-    'use strict';
+      // ─── Game Database ────────────────────────────────────────────────────
+      // All games sourced from open-source GitHub unblocked game collections
+      // https://github.com/cid-ku/unblocked-html5-games
+      const GAMES = [
+        // ── Action ──
+        {
+          id: 1,
+          title: 'Redball 4',
+          category: 'action',
+          url: 'https://ottergames.org/g/redball-4',
+        },
+        {
+          id: 2,
+          title: 'Bullet Bros',
+          category: 'action',
+          url: 'https://ottergames.org/g/bullet-bros',
+        },
+        {
+          id: 3,
+          title: 'Run Run Duck',
+          category: 'action',
+          url: 'https://ottergames.org/g/run-run-duck',
+        },
+        {
+          id: 4,
+          title: 'Level Devil 2',
+          category: 'action',
+          url: 'https://ottergames.org/g/level-devil-2',
+        },
+        {
+          id: 5,
+          title: 'Temple of Boom',
+          category: 'action',
+          url: 'https://ottergames.org/g/temple-of-boom',
+        },
+        {
+          id: 6,
+          title: 'Poor Bunny',
+          category: 'action',
+          url: 'https://ottergames.org/g/poor-bunny',
+        },
+        {
+          id: 7,
+          title: 'Geometry Dash Absolute Zero',
+          category: 'action',
+          url: 'https://ottergames.org/g/geometry-dash-absolute-zero',
+        },
+        {
+          id: 8,
+          title: 'Moss Moss',
+          category: 'action',
+          url: 'https://ottergames.org/g/moss-moss',
+        },
 
-    // ─── Sample Game Database ────────────────────────────────────────────
-    const GAMES = [
-      {
-        id: 1,
-        title: 'Retro Racer',
-        category: 'action',
-        thumbnail: 'https://picsum.photos/seed/racer/400/300',
-        url: 'https://www.crazygames.com/embed/retro-racer'
-      },
-      {
-        id: 2,
-        title: 'Puzzle Blocks',
-        category: 'puzzle',
-        thumbnail: 'https://picsum.photos/seed/blocks/400/300',
-        url: 'https://www.crazygames.com/embed/puzzle-blocks'
-      },
-      {
-        id: 3,
-        title: 'Soccer Star',
-        category: 'sports',
-        thumbnail: 'https://picsum.photos/seed/soccer/400/300',
-        url: 'https://www.crazygames.com/embed/soccer-star'
-      },
-      {
-        id: 4,
-        title: 'Space Shooter',
-        category: 'action',
-        thumbnail: 'https://picsum.photos/seed/space/400/300',
-        url: 'https://www.crazygames.com/embed/space-shooter'
-      },
-      {
-        id: 5,
-        title: 'Word Search',
-        category: 'puzzle',
-        thumbnail: 'https://picsum.photos/seed/word/400/300',
-        url: 'https://www.crazygames.com/embed/word-search'
-      },
-      {
-        id: 6,
-        title: 'Basketball Dribble',
-        category: 'sports',
-        thumbnail: 'https://picsum.photos/seed/basket/400/300',
-        url: 'https://www.crazygames.com/embed/basketball-dribble'
-      },
-      {
-        id: 7,
-        title: 'Tank Battle',
-        category: 'action',
-        thumbnail: 'https://picsum.photos/seed/tank/400/300',
-        url: 'https://www.crazygames.com/embed/tank-battle'
-      },
-      {
-        id: 8,
-        title: 'Sudoku Classic',
-        category: 'puzzle',
-        thumbnail: 'https://picsum.photos/seed/sudoku/400/300',
-        url: 'https://www.crazygames.com/embed/sudoku-classic'
-      },
-      {
-        id: 9,
-        title: 'Golf Pro',
-        category: 'sports',
-        thumbnail: 'https://picsum.photos/seed/golf/400/300',
-        url: 'https://www.crazygames.com/embed/golf-pro'
-      },
-      {
-        id: 10,
-        title: 'Alien Invasion',
-        category: 'action',
-        thumbnail: 'https://picsum.photos/seed/alien/400/300',
-        url: 'https://www.crazygames.com/embed/alien-invasion'
-      },
-      // Extra popular ones (mix)
-      {
-        id: 11,
-        title: 'Minecraft Classic',
-        category: 'action',
-        thumbnail: 'https://picsum.photos/seed/minecraft/400/300',
-        url: 'https://www.crazygames.com/embed/minecraft-classic'
-      },
-      {
-        id: 12,
-        title: '2048',
-        category: 'puzzle',
-        thumbnail: 'https://picsum.photos/seed/2048/400/300',
-        url: 'https://www.crazygames.com/embed/2048'
+        // ── Puzzle ──
+        {
+          id: 9,
+          title: 'Bomberman Classic',
+          category: 'puzzle',
+          url: 'https://ottergames.org/g/bomberman-classic',
+        },
+        {
+          id: 10,
+          title: "World's Hardest Game 2",
+          category: 'puzzle',
+          url: 'https://ottergames.org/g/worlds-hardest-game-2',
+        },
+        {
+          id: 11,
+          title: 'Stacktris',
+          category: 'puzzle',
+          url: 'https://ottergames.org/g/stacktris',
+        },
+        {
+          id: 12,
+          title: 'Gobble',
+          category: 'puzzle',
+          url: 'https://ottergames.org/g/gobble',
+        },
+        {
+          id: 13,
+          title: 'Crossy Road',
+          category: 'puzzle',
+          url: 'https://ottergames.org/g/crossy-road',
+        },
+        {
+          id: 14,
+          title: 'Snake.io',
+          category: 'puzzle',
+          url: 'https://ottergames.org/g/snake-io',
+        },
+        {
+          id: 15,
+          title: 'Pinball Master',
+          category: 'puzzle',
+          url: 'https://ottergames.org/g/pinball-master',
+        },
+
+        // ── Sports ──
+        {
+          id: 16,
+          title: 'Flipping Master',
+          category: 'sports',
+          url: 'https://ottergames.org/g/flipping-master',
+        },
+        {
+          id: 17,
+          title: 'Slide Down',
+          category: 'sports',
+          url: 'https://ottergames.org/g/slide-down',
+        },
+        {
+          id: 18,
+          title: 'Ziggy Road',
+          category: 'sports',
+          url: 'https://ottergames.org/g/ziggy-road',
+        },
+        {
+          id: 19,
+          title: 'Tag Game',
+          category: 'sports',
+          url: 'https://ottergames.org/g/tag-game',
+        },
+        {
+          id: 20,
+          title: 'Drift Hunters',
+          category: 'sports',
+          url: 'https://ottergames.org/g/drift-hunters',
+        },
+        {
+          id: 21,
+          title: 'Escape School Duel',
+          category: 'sports',
+          url: 'https://ottergames.org/g/escape-school-duel',
+        },
+      ];
+
+      // ─── DOM refs ─────────────────────────────────────────────────────────
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = {
+        popular: document.getElementById('results'),
+        action: document.getElementById('action-results'),
+        puzzle: document.getElementById('puzzle-results'),
+        sports: document.getElementById('sports-results'),
+        search: document.getElementById('search-results'),
+      };
+      const searchInput = document.getElementById('search-input');
+      const searchBtn = document.getElementById('search-btn');
+      const gameArea = document.getElementById('game-area');
+      const gameIframe = document.getElementById('game-iframe');
+      const gameTitle = document.getElementById('game-title');
+      const closeGame = document.getElementById('close-game');
+      const proxySelect = document.getElementById('proxy-select');
+      const proxyStatus = document.getElementById('proxy-status');
+
+      // ─── Helper: get initials for thumbnail ────────────────────────────
+      function getInitials(title) {
+        return title
+          .split(' ')
+          .slice(0, 2)
+          .map((word) => word[0])
+          .join('')
+          .toUpperCase();
       }
-    ];
 
-    // ─── DOM refs ─────────────────────────────────────────────────────────
-    const tabs = document.querySelectorAll('.tab');
-    const tabContents = {
-      popular: document.getElementById('results'),
-      action: document.getElementById('action-results'),
-      puzzle: document.getElementById('puzzle-results'),
-      sports: document.getElementById('sports-results'),
-      search: document.getElementById('search-results')
-    };
-    const searchInput = document.getElementById('search-input');
-    const searchBtn = document.getElementById('search-btn');
-    const gameArea = document.getElementById('game-area');
-    const gameIframe = document.getElementById('game-iframe');
-    const gameTitle = document.getElementById('game-title');
-    const closeGame = document.getElementById('close-game');
-    const proxySelect = document.getElementById('proxy-select');
-    const proxyStatus = document.getElementById('proxy-status');
-
-    // ─── Helper: render game cards ────────────────────────────────────
-    function renderGames(container, gameList) {
-      if (!container) return;
-      if (!gameList || gameList.length === 0) {
-        container.innerHTML = `<div class="status">No games found.</div>`;
-        return;
-      }
-      let html = '';
-      gameList.forEach(game => {
-        html += `
-          <div class="game-card" data-id="${game.id}">
-            <img src="${game.thumbnail}" alt="${game.title}" loading="lazy">
-            <div class="info">
-              <h4>${game.title}</h4>
-              <span class="category">${game.category}</span>
+      // ─── Helper: render game cards ────────────────────────────────────
+      function renderGames(container, gameList) {
+        if (!container) return;
+        if (!gameList || gameList.length === 0) {
+          container.innerHTML = `<div class="status">No games found.</div>`;
+          return;
+        }
+        let html = '';
+        gameList.forEach((game) => {
+          const initials = getInitials(game.title);
+          html += `
+            <div class="game-card" data-id="${game.id}">
+              <div class="thumbnail">${initials}</div>
+              <div class="info">
+                <h4>${game.title}</h4>
+                <span class="category">${game.category}</span>
+              </div>
             </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
+          `;
+        });
+        container.innerHTML = html;
 
-      // Attach click listeners to each card
-      container.querySelectorAll('.game-card').forEach(card => {
-        card.addEventListener('click', function() {
-          const id = parseInt(this.dataset.id);
-          const game = GAMES.find(g => g.id === id);
-          if (game) loadGame(game);
+        container.querySelectorAll('.game-card').forEach((card) => {
+          card.addEventListener('click', function () {
+            const id = parseInt(this.dataset.id);
+            const game = GAMES.find((g) => g.id === id);
+            if (game) loadGame(game);
+          });
+        });
+      }
+
+      // ─── Load game into iframe ────────────────────────────────────────
+      function loadGame(game) {
+        gameTitle.textContent = game.title;
+        gameIframe.src = game.url;
+        gameArea.classList.add('active');
+        gameArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // ─── Close game ────────────────────────────────────────────────────
+      function closeGameArea() {
+        gameIframe.src = 'about:blank';
+        gameArea.classList.remove('active');
+      }
+
+      // ─── Filter games by category ────────────────────────────────────
+      function getGamesByCategory(cat) {
+        return GAMES.filter((g) => g.category === cat);
+      }
+
+      // ─── Search games ─────────────────────────────────────────────────
+      function searchGames(query) {
+        const q = query.trim().toLowerCase();
+        if (!q) return GAMES;
+        return GAMES.filter((g) => g.title.toLowerCase().includes(q));
+      }
+
+      // ─── Tab switching ─────────────────────────────────────────────────
+      function switchTab(tabId) {
+        tabs.forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.tab === tabId);
+        });
+        Object.keys(tabContents).forEach((key) => {
+          const content = document.getElementById(key + '-tab');
+          if (content) {
+            content.classList.toggle('active', key === tabId);
+          }
+        });
+
+        if (tabId === 'popular') {
+          renderGames(tabContents.popular, GAMES);
+        } else if (tabId === 'action') {
+          renderGames(tabContents.action, getGamesByCategory('action'));
+        } else if (tabId === 'puzzle') {
+          renderGames(tabContents.puzzle, getGamesByCategory('puzzle'));
+        } else if (tabId === 'sports') {
+          renderGames(tabContents.sports, getGamesByCategory('sports'));
+        } else if (tabId === 'search') {
+          const query = searchInput.value;
+          const results = searchGames(query);
+          renderGames(tabContents.search, results);
+        }
+      }
+
+      // ─── Proxy status update ──────────────────────────────────────────
+      function updateProxyStatus() {
+        const val = proxySelect.value;
+        const labels = {
+          none: '● Direct',
+          'hide-me': '🔒 Hide.me',
+          'holy-unblocker': '🔒 Holy Unblocker',
+          ultraviolet: '🔒 Ultraviolet',
+          iproyal: '🔒 IPRoyal',
+          '4everproxy': '🔒 4everProxy',
+        };
+        proxyStatus.textContent = labels[val] || '● Direct';
+      }
+      proxySelect.addEventListener('change', updateProxyStatus);
+      updateProxyStatus();
+
+      // ─── Event listeners ──────────────────────────────────────────────
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', function () {
+          switchTab(this.dataset.tab);
         });
       });
-    }
 
-    // ─── Load game into iframe ────────────────────────────────────────
-    function loadGame(game) {
-      gameTitle.textContent = game.title;
-      gameIframe.src = game.url;
-      gameArea.classList.add('active');
-      // Scroll to game area
-      gameArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // ─── Close game ────────────────────────────────────────────────────
-    function closeGameArea() {
-      gameIframe.src = 'about:blank';
-      gameArea.classList.remove('active');
-    }
-
-    // ─── Filter games by category ────────────────────────────────────
-    function getGamesByCategory(cat) {
-      return GAMES.filter(g => g.category === cat);
-    }
-
-    // ─── Search games ─────────────────────────────────────────────────
-    function searchGames(query) {
-      const q = query.trim().toLowerCase();
-      if (!q) return GAMES;
-      return GAMES.filter(g => g.title.toLowerCase().includes(q));
-    }
-
-    // ─── Tab switching ─────────────────────────────────────────────────
-    function switchTab(tabId) {
-      // Update tab buttons
-      tabs.forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.tab === tabId);
-      });
-      // Update content
-      Object.keys(tabContents).forEach(key => {
-        const content = document.getElementById(key + '-tab');
-        if (content) {
-          content.classList.toggle('active', key === tabId);
-        }
-      });
-      // If switching to a category tab, render its content if not already done
-      if (tabId === 'popular') {
-        // Show all games (or a curated set) – we'll just show all
-        renderGames(tabContents.popular, GAMES);
-      } else if (tabId === 'action') {
-        renderGames(tabContents.action, getGamesByCategory('action'));
-      } else if (tabId === 'puzzle') {
-        renderGames(tabContents.puzzle, getGamesByCategory('puzzle'));
-      } else if (tabId === 'sports') {
-        renderGames(tabContents.sports, getGamesByCategory('sports'));
-      } else if (tabId === 'search') {
-        // Show search results based on current input
+      function performSearch() {
         const query = searchInput.value;
         const results = searchGames(query);
         renderGames(tabContents.search, results);
+        switchTab('search');
       }
-    }
-
-    // ─── Proxy status update ──────────────────────────────────────────
-    function updateProxyStatus() {
-      const val = proxySelect.value;
-      const labels = {
-        'none': '● Direct',
-        'hide-me': '🔒 Hide.me',
-        'holy-unblocker': '🔒 Holy Unblocker',
-        'ultraviolet': '🔒 Ultraviolet',
-        'iproyal': '🔒 IPRoyal',
-        '4everproxy': '🔒 4everProxy'
-      };
-      proxyStatus.textContent = labels[val] || '● Direct';
-      // You could add real proxy logic here (e.g., open proxy URL in new tab)
-      // For demo, just show a message.
-    }
-    proxySelect.addEventListener('change', updateProxyStatus);
-    updateProxyStatus();
-
-    // ─── Event listeners ──────────────────────────────────────────────
-
-    // Tab clicks
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        const tabId = this.dataset.tab;
-        switchTab(tabId);
+      searchBtn.addEventListener('click', performSearch);
+      searchInput.addEventListener('keyup', function (e) {
+        if (e.key === 'Enter') performSearch();
       });
-    });
 
-    // Search button & enter key
-    function performSearch() {
-      const query = searchInput.value;
-      const results = searchGames(query);
-      renderGames(tabContents.search, results);
-      // Switch to search tab
-      switchTab('search');
-    }
-    searchBtn.addEventListener('click', performSearch);
-    searchInput.addEventListener('keyup', function(e) {
-      if (e.key === 'Enter') performSearch();
-    });
+      closeGame.addEventListener('click', closeGameArea);
 
-    // Close game
-    closeGame.addEventListener('click', closeGameArea);
+      // ─── Initial load ──────────────────────────────────────────────────
+      renderGames(tabContents.popular, GAMES);
+      renderGames(tabContents.action, getGamesByCategory('action'));
+      renderGames(tabContents.puzzle, getGamesByCategory('puzzle'));
+      renderGames(tabContents.sports, getGamesByCategory('sports'));
 
-    // ─── Initial load ──────────────────────────────────────────────────
-
-    // Default: load popular (all games)
-    renderGames(tabContents.popular, GAMES);
-
-    // Pre-load other tabs with their categories (so they're ready when clicked)
-    renderGames(tabContents.action, getGamesByCategory('action'));
-    renderGames(tabContents.puzzle, getGamesByCategory('puzzle'));
-    renderGames(tabContents.sports, getGamesByCategory('sports'));
-    // Search tab starts empty with a message; we'll keep it as is.
-
-    // ─── (Optional) Handle iframe loading errors ──────────────────────
-    // Since some embed URLs may not work due to CORS, we can't do much.
-
-    console.log('🎮 Unblocked Games Hub ready!');
-  })();
-</script>
-
+      console.log('🎮 Unblocked Games Hub ready!');
+    })();
+  </script>
 </body>
 </html>
