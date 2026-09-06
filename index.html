@@ -1,685 +1,627 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unblocked Games Hub</title>
-  <style>
-    /* ── Reset & base ── */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My YouTube Hub</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #f1f1f1;
+            min-height: 100vh;
+        }
+        header {
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid #272727;
+        }
+        header h1 {
+            margin: 0 0 4px 0;
+            font-size: 22px;
+        }
+        header p {
+            margin: 0;
+            color: #aaa;
+            font-size: 13px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .setup-box {
+            background: #1a1a1a;
+            border: 1px solid #303030;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .setup-box label {
+            display: block;
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 6px;
+        }
+        .setup-box input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #303030;
+            background: #0f0f0f;
+            color: #fff;
+            font-size: 14px;
+        }
+        .setup-box small {
+            display: block;
+            margin-top: 8px;
+            color: #777;
+            line-height: 1.5;
+        }
+        .setup-box a {
+            color: #3ea6ff;
+        }
+        .search-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .search-row input {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 24px;
+            border: 1px solid #303030;
+            background: #121212;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-row input:focus {
+            border-color: #3ea6ff;
+        }
+        .search-row button {
+            padding: 0 22px;
+            border-radius: 24px;
+            border: none;
+            background: #3ea6ff;
+            color: #0f0f0f;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .search-row button:hover {
+            background: #65b8ff;
+        }
+        #player-area {
+            margin-bottom: 24px;
+            display: none;
+        }
+        #player-area iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            border-radius: 10px;
+        }
+        #player-title {
+            margin: 10px 0 0 0;
+            font-size: 15px;
+            color: #eee;
+        }
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+        .card {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+        .card img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        .card-info {
+            padding: 10px 12px;
+        }
+        .card-info .title {
+            font-size: 13.5px;
+            line-height: 1.35;
+            margin: 0 0 4px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-info .channel {
+            font-size: 12px;
+            color: #999;
+            margin: 0;
+        }
+        .status {
+            text-align: center;
+            color: #777;
+            padding: 40px 0;
+            font-size: 14px;
+            grid-column: 1 / -1;
+        }
+        .status.error {
+            color: #ff6b6b;
+        }
+        .status.success {
+            color: #69db7c;
+        }
+        #spotify-embed iframe {
+            width: 100%;
+            border-radius: 12px;
+            border: none;
+        }
+        #twitch-embed iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            border-radius: 10px;
+        }
+        .embed-error {
+            color: #ff6b6b;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .section-divider {
+            border: none;
+            border-top: 1px solid #272727;
+            margin: 36px 0;
+        }
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .bloxd-wrapper {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bloxd-wrapper iframe {
+            border: none;
+            display: block;
+            width: 100%;
+            height: 600px;
+        }
+        .bloxd-toolbar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            background: #1a1a1a;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #303030;
+        }
+        .bloxd-toolbar button {
+            background: transparent;
+            border: 1px solid #3ea6ff;
+            color: #3ea6ff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .bloxd-toolbar button.active {
+            background: #3ea6ff;
+            color: #0f0f0f;
+        }
+        .bloxd-toolbar button:hover {
+            background: #3ea6ff;
+            color: #0f0f0f;
+        }
+        .bloxd-toolbar .fallback-link {
+            color: #aaa;
+            font-size: 13px;
+            margin-left: auto;
+        }
+        .bloxd-toolbar .fallback-link a {
+            color: #3ea6ff;
+            text-decoration: none;
+        }
+        .bloxd-note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 8px;
+        }
+        .embed-placeholder {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 32px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            border: 1px dashed #303030;
+        }
+        .embed-placeholder a {
+            color: #3ea6ff;
+        }
 
-    /* ── Header ── */
-    header {
-      background: linear-gradient(145deg, #1e293b, #0f172a);
-      padding: 2rem 1rem 1.5rem;
-      text-align: center;
-      border-bottom: 1px solid #334155;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    header p {
-      font-size: 1.1rem;
-      color: #94a3b8;
-      margin-top: 0.25rem;
-    }
-
-    /* ── Container ── */
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem;
-      flex: 1;
-      width: 100%;
-    }
-
-    /* ── Setup box ── */
-    .setup-box {
-      background: #1e293b;
-      border-radius: 16px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 2rem;
-      border: 1px solid #334155;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 1rem 1.5rem;
-    }
-    .setup-box label {
-      font-weight: 600;
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .setup-box select {
-      background: #0f172a;
-      color: #e2e8f0;
-      border: 1px solid #475569;
-      padding: 0.4rem 1rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      outline: none;
-    }
-    .setup-box select:focus {
-      border-color: #38bdf8;
-    }
-    .setup-box small {
-      color: #94a3b8;
-      font-size: 0.85rem;
-      margin-left: auto;
-      max-width: 500px;
-    }
-    .setup-box small a {
-      color: #38bdf8;
-      text-decoration: none;
-    }
-    .setup-box small a:hover {
-      text-decoration: underline;
-    }
-    #proxy-status {
-      font-size: 0.85rem;
-      color: #4ade80;
-      margin-left: 0.5rem;
-    }
-
-    /* ── Tabs ── */
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 2px solid #1e293b;
-      padding-bottom: 0.5rem;
-    }
-    .tab {
-      padding: 0.5rem 1.25rem;
-      border-radius: 30px;
-      background: #1e293b;
-      color: #94a3b8;
-      cursor: pointer;
-      font-weight: 500;
-      transition: 0.2s;
-      border: 1px solid transparent;
-      user-select: none;
-    }
-    .tab:hover {
-      background: #334155;
-      color: #e2e8f0;
-    }
-    .tab.active {
-      background: #38bdf8;
-      color: #0f172a;
-      border-color: #38bdf8;
-    }
-
-    /* ── Tab content ── */
-    .tab-content {
-      display: none;
-      animation: fade 0.2s ease;
-    }
-    .tab-content.active {
-      display: block;
-    }
-    @keyframes fade {
-      from {
-        opacity: 0.4;
-        transform: translateY(4px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ── Game grid ── */
-    #results,
-    #action-results,
-    #puzzle-results,
-    #sports-results,
-    #search-results {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.25rem;
-      margin-top: 0.5rem;
-    }
-    .game-card {
-      background: #1e293b;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid #334155;
-      transition: 0.2s;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-    }
-    .game-card:hover {
-      transform: translateY(-4px);
-      border-color: #38bdf8;
-      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.15);
-    }
-    .game-card .thumbnail {
-      width: 100%;
-      height: 130px;
-      background: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #38bdf8;
-      letter-spacing: 1px;
-      border-bottom: 1px solid #334155;
-    }
-    .game-card .info {
-      padding: 0.75rem 1rem 1rem;
-      flex: 1;
-    }
-    .game-card .info h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .game-card .info .category {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* ── Search row ── */
-    .search-row {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .search-row input {
-      flex: 1;
-      min-width: 200px;
-      padding: 0.6rem 1rem;
-      border-radius: 30px;
-      border: 1px solid #334155;
-      background: #1e293b;
-      color: #e2e8f0;
-      font-size: 1rem;
-      outline: none;
-    }
-    .search-row input:focus {
-      border-color: #38bdf8;
-    }
-    .search-row button {
-      padding: 0.6rem 1.8rem;
-      border-radius: 30px;
-      border: none;
-      background: #38bdf8;
-      color: #0f172a;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .search-row button:hover {
-      background: #7dd3fc;
-    }
-
-    /* ── Status / empty ── */
-    .status {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 3rem 1rem;
-      color: #64748b;
-      font-style: italic;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      .setup-box {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .setup-box small {
-        margin-left: 0;
-        max-width: 100%;
-      }
-      header h1 {
-        font-size: 1.8rem;
-      }
-    }
-  </style>
+        @media (max-width: 600px) {
+            .search-row {
+                flex-wrap: wrap;
+            }
+            .search-row input {
+                min-width: 0;
+            }
+            .search-row button {
+                padding: 10px 18px;
+                flex: 1;
+            }
+            #results {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            .bloxd-wrapper iframe {
+                height: 400px;
+            }
+            .bloxd-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .bloxd-toolbar .fallback-link {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>🎮 Unblocked Games Hub</h1>
-    <p>Click any game to play – opens in a new tab</p>
-  </header>
+    <header>
+        <h1>🎬 My YouTube Hub</h1>
+        <p>Search · Watch · Explore</p>
+    </header>
 
-  <div class="container">
-    <!-- Proxy Selector (visual only) -->
-    <div class="setup-box">
-      <label for="proxy-select">🔌 Proxy Service</label>
-      <select id="proxy-select">
-        <option value="none">No Proxy (Direct)</option>
-        <option value="hide-me">Hide.me Web Proxy</option>
-        <option value="holy-unblocker">Holy Unblocker</option>
-        <option value="ultraviolet">Ultraviolet</option>
-        <option value="iproyal">IPRoyal</option>
-        <option value="4everproxy">4everProxy</option>
-      </select>
-      <span id="proxy-status">● Direct</span>
-      <small>
-        Proxies help bypass network restrictions.
-        <a href="https://macrolorblx.com/best-unblocked-games-web-proxies-2026-edition/" target="_blank">Learn more</a>
-      </small>
-    </div>
+    <div class="container">
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <div class="tab active" data-tab="popular">🔥 Popular</div>
-      <div class="tab" data-tab="action">⚔️ Action</div>
-      <div class="tab" data-tab="puzzle">🧩 Puzzle</div>
-      <div class="tab" data-tab="sports">⚽ Sports</div>
-      <div class="tab" data-tab="search">🔍 Search</div>
-    </div>
+        <!-- API KEY -->
+        <div class="setup-box" id="setup-box">
+            <label for="api-key">🔑 YouTube Data API Key</label>
+            <input type="password" id="api-key" placeholder="Paste your API key here" />
+            <small>
+                Get a free key from the
+                <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank">Google Cloud Console</a>
+                (enable "YouTube Data API v3", then create an API key under Credentials).
+                Free tier gives you ~100 searches/day. The key is only kept in this browser tab, nothing is saved or sent anywhere else.
+            </small>
+        </div>
 
-    <!-- Tab Contents -->
-    <div id="popular-tab" class="tab-content active">
-      <div id="results"></div>
-    </div>
-    <div id="action-tab" class="tab-content">
-      <div id="action-results"></div>
-    </div>
-    <div id="puzzle-tab" class="tab-content">
-      <div id="puzzle-results"></div>
-    </div>
-    <div id="sports-tab" class="tab-content">
-      <div id="sports-results"></div>
-    </div>
-    <div id="search-tab" class="tab-content">
-      <div class="search-row">
-        <input type="text" id="search-input" placeholder="Search for games..." />
-        <button id="search-btn">Search</button>
-      </div>
-      <div id="search-results"></div>
-    </div>
-  </div>
+        <!-- SEARCH -->
+        <div class="search-row">
+            <input type="text" id="search-input" placeholder="Search YouTube..." />
+            <button id="search-btn">Search</button>
+        </div>
 
-  <script>
-    (function () {
-      'use strict';
+        <!-- PLAYER -->
+        <div id="player-area">
+            <iframe id="player" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p id="player-title"></p>
+        </div>
 
-      // ─── Game Database ────────────────────────────────────────────────────
-      const GAMES = [
-        // ── Popular (all games appear here) ──
-        {
-          id: 1,
-          title: 'Tetris 3D',
-          category: 'popular',
-          url: 'tetris.html',
-        },
-        {
-          id: 2,
-          title: 'Minecraft Classic',
-          category: 'popular',
-          url: 'https://classic.minecraft.net/',
-        },
-        {
-          id: 3,
-          title: 'Bloxd.io',
-          category: 'popular',
-          url: 'https://bloxd.io/',
-        },
-        {
-          id: 4,
-          title: '2048',
-          category: 'popular',
-          url: 'https://play2048.co/',
-        },
-        {
-          id: 5,
-          title: 'Pac-Man',
-          category: 'popular',
-          url: 'https://www.google.com/logos/2010/pacman10-hp.html',
-        },
+        <!-- RESULTS -->
+        <div id="results">
+            <div class="status">🔍 Search for something to get started.</div>
+        </div>
 
-        // ── Action ──
-        {
-          id: 6,
-          title: 'Redball 4',
-          category: 'action',
-          url: 'https://ottergames.org/g/redball-4',
-        },
-        {
-          id: 7,
-          title: 'Bullet Bros',
-          category: 'action',
-          url: 'https://ottergames.org/g/bullet-bros',
-        },
-        {
-          id: 8,
-          title: 'Run Run Duck',
-          category: 'action',
-          url: 'https://ottergames.org/g/run-run-duck',
-        },
-        {
-          id: 9,
-          title: 'Level Devil 2',
-          category: 'action',
-          url: 'https://ottergames.org/g/level-devil-2',
-        },
-        {
-          id: 10,
-          title: 'Temple of Boom',
-          category: 'action',
-          url: 'https://ottergames.org/g/temple-of-boom',
-        },
-        {
-          id: 11,
-          title: 'Poor Bunny',
-          category: 'action',
-          url: 'https://ottergames.org/g/poor-bunny',
-        },
-        {
-          id: 12,
-          title: 'Geometry Dash Absolute Zero',
-          category: 'action',
-          url: 'https://ottergames.org/g/geometry-dash-absolute-zero',
-        },
-        {
-          id: 13,
-          title: 'Moss Moss',
-          category: 'action',
-          url: 'https://ottergames.org/g/moss-moss',
-        },
-        {
-          id: 14,
-          title: 'Drift Hunters',
-          category: 'action',
-          url: 'https://ottergames.org/g/drift-hunters',
-        },
-        {
-          id: 15,
-          title: 'Five Nights at Freddy\'s',
-          category: 'action',
-          url: 'https://ottergames.org/g/fnaf',
-        },
-        {
-          id: 16,
-          title: 'Among Us',
-          category: 'action',
-          url: 'https://ottergames.org/g/among-us',
-        },
+        <!-- LOAD MORE -->
+        <div style="text-align:center; margin-top:20px;">
+            <button id="load-more-btn" style="display:none; padding:10px 24px; border-radius:20px; border:1px solid #303030; background:#1a1a1a; color:#fff; cursor:pointer; font-size:14px; transition:background 0.2s;">Load more</button>
+        </div>
 
-        // ── Puzzle ──
-        {
-          id: 17,
-          title: 'Bomberman Classic',
-          category: 'puzzle',
-          url: 'https://ottergames.org/g/bomberman-classic',
-        },
-        {
-          id: 18,
-          title: "World's Hardest Game 2",
-          category: 'puzzle',
-          url: 'https://ottergames.org/g/worlds-hardest-game-2',
-        },
-        {
-          id: 19,
-          title: 'Stacktris',
-          category: 'puzzle',
-          url: 'https://ottergames.org/g/stacktris',
-        },
-        {
-          id: 20,
-          title: 'Gobble',
-          category: 'puzzle',
-          url: 'https://ottergames.org/g/gobble',
-        },
-        {
-          id: 21,
-          title: 'Crossy Road',
-          category: 'puzzle',
-          url: 'https://ottergames.org/g/crossy-road',
-        },
-        {
-          id: 22,
-          title: 'Snake.io',
-          category: 'puzzle',
-          url: 'https://ottergames.org/g/snake-io',
-        },
-        {
-          id: 23,
-          title: 'Pinball Master',
-          category: 'puzzle',
-          url: 'https://ottergames.org/g/pinball-master',
-        },
-        {
-          id: 24,
-          title: '2048',
-          category: 'puzzle',
-          url: 'https://play2048.co/',
-        },
+        <hr class="section-divider" />
 
-        // ── Sports ──
-        {
-          id: 25,
-          title: 'Flipping Master',
-          category: 'sports',
-          url: 'https://ottergames.org/g/flipping-master',
-        },
-        {
-          id: 26,
-          title: 'Slide Down',
-          category: 'sports',
-          url: 'https://ottergames.org/g/slide-down',
-        },
-        {
-          id: 27,
-          title: 'Ziggy Road',
-          category: 'sports',
-          url: 'https://ottergames.org/g/ziggy-road',
-        },
-        {
-          id: 28,
-          title: 'Tag Game',
-          category: 'sports',
-          url: 'https://ottergames.org/g/tag-game',
-        },
-        {
-          id: 29,
-          title: 'Escape School Duel',
-          category: 'sports',
-          url: 'https://ottergames.org/g/escape-school-duel',
-        },
-        {
-          id: 30,
-          title: 'Basketball Dribble',
-          category: 'sports',
-          url: 'https://ottergames.org/g/basketball-dribble',
-        },
-        {
-          id: 31,
-          title: 'Golf Pro',
-          category: 'sports',
-          url: 'https://ottergames.org/g/golf-pro',
-        },
-
-        // ── Extra duplicates for better visibility ──
-        {
-          id: 32,
-          title: 'Minecraft Classic',
-          category: 'action',
-          url: 'https://classic.minecraft.net/',
-        },
-        {
-          id: 33,
-          title: 'Bloxd.io',
-          category: 'action',
-          url: 'https://bloxd.io/',
-        },
-        {
-          id: 34,
-          title: 'Pac-Man',
-          category: 'puzzle',
-          url: 'https://www.google.com/logos/2010/pacman10-hp.html',
-        },
-      ];
-
-      // ─── DOM refs ─────────────────────────────────────────────────────────
-      const tabs = document.querySelectorAll('.tab');
-      const tabContents = {
-        popular: document.getElementById('results'),
-        action: document.getElementById('action-results'),
-        puzzle: document.getElementById('puzzle-results'),
-        sports: document.getElementById('sports-results'),
-        search: document.getElementById('search-results'),
-      };
-      const searchInput = document.getElementById('search-input');
-      const searchBtn = document.getElementById('search-btn');
-      const proxySelect = document.getElementById('proxy-select');
-      const proxyStatus = document.getElementById('proxy-status');
-
-      // ─── Helper: get initials for thumbnail ────────────────────────────
-      function getInitials(title) {
-        return title
-          .split(' ')
-          .slice(0, 2)
-          .map((word) => word[0])
-          .join('')
-          .toUpperCase();
-      }
-
-      // ─── Helper: render game cards ────────────────────────────────────
-      function renderGames(container, gameList) {
-        if (!container) return;
-        if (!gameList || gameList.length === 0) {
-          container.innerHTML = `<div class="status">No games found.</div>`;
-          return;
-        }
-        let html = '';
-        gameList.forEach((game) => {
-          const initials = getInitials(game.title);
-          html += `
-            <div class="game-card" data-url="${game.url}">
-              <div class="thumbnail">${initials}</div>
-              <div class="info">
-                <h4>${game.title}</h4>
-                <span class="category">${game.category}</span>
-              </div>
+        <!-- SPOTIFY -->
+        <h2 class="section-title">🎧 Spotify</h2>
+        <div class="search-row">
+            <input type="text" id="spotify-input" placeholder="Paste a Spotify track, album, or playlist link…" />
+            <button id="spotify-btn">Load</button>
+        </div>
+        <div id="spotify-embed">
+            <div class="embed-placeholder">
+                Paste a Spotify link above to embed the player.
             </div>
-          `;
-        });
-        container.innerHTML = html;
+        </div>
 
-        container.querySelectorAll('.game-card').forEach((card) => {
-          card.addEventListener('click', function () {
-            const url = this.dataset.url;
-            window.open(url, '_blank');
-          });
-        });
-      }
+        <hr class="section-divider" />
 
-      // ─── Filter games by category ────────────────────────────────────
-      function getGamesByCategory(cat) {
-        return GAMES.filter((g) => g.category === cat);
-      }
+        <!-- TWITCH -->
+        <h2 class="section-title">🎮 Twitch</h2>
+        <div class="search-row">
+            <input type="text" id="twitch-input" placeholder="Channel name (e.g. shroud) — leave blank for top live" />
+            <button id="twitch-btn">Load</button>
+        </div>
+        <div id="twitch-embed">
+            <div class="embed-placeholder">
+                Enter a channel name above or click "Load" to see top live streams.
+            </div>
+        </div>
 
-      // ─── Search games ─────────────────────────────────────────────────
-      function searchGames(query) {
-        const q = query.trim().toLowerCase();
-        if (!q) return GAMES;
-        return GAMES.filter((g) => g.title.toLowerCase().includes(q));
-      }
+        <hr class="section-divider" />
 
-      // ─── Tab switching ─────────────────────────────────────────────────
-      function switchTab(tabId) {
-        tabs.forEach((tab) => {
-          tab.classList.toggle('active', tab.dataset.tab === tabId);
-        });
-        Object.keys(tabContents).forEach((key) => {
-          const content = document.getElementById(key + '-tab');
-          if (content) {
-            content.classList.toggle('active', key === tabId);
-          }
-        });
+        <!-- BLOXD – Proxy default -->
+        <h2 class="section-title">🧱 Bloxd</h2>
+        <div class="bloxd-toolbar">
+            <span style="color:#aaa; font-size:13px;">Embed mode:</span>
+            <button id="bloxd-direct-btn">Direct</button>
+            <button id="bloxd-proxy-btn" class="active">Proxy</button>
+            <span class="fallback-link">
+                🔗 <a href="https://bloxd.io" target="_blank">Open in new tab</a>
+            </span>
+        </div>
+        <div class="bloxd-wrapper" id="bloxd-wrapper">
+            <!-- Proxy URL by default -->
+            <iframe id="bloxd-iframe" src="https://corsproxy.io/?url=https%3A%2F%2Fbloxd.io" allowfullscreen></iframe>
+        </div>
+        <p class="bloxd-note">
+            ⚠️ <strong>Proxy mode</strong> is enabled by default to avoid blocking. If the game doesn't load, try <strong>Direct</strong> or open in a new tab.
+            The proxy service may have usage limits.
+        </p>
 
-        if (tabId === 'popular') {
-          renderGames(tabContents.popular, GAMES);
-        } else if (tabId === 'action') {
-          renderGames(tabContents.action, getGamesByCategory('action'));
-        } else if (tabId === 'puzzle') {
-          renderGames(tabContents.puzzle, getGamesByCategory('puzzle'));
-        } else if (tabId === 'sports') {
-          renderGames(tabContents.sports, getGamesByCategory('sports'));
-        } else if (tabId === 'search') {
-          const query = searchInput.value;
-          const results = searchGames(query);
-          renderGames(tabContents.search, results);
+    </div>
+
+    <script>
+        // ─── DOM refs ───────────────────────────────────────────────
+        const apiKeyInput = document.getElementById('api-key');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const results = document.getElementById('results');
+        const playerArea = document.getElementById('player-area');
+        const player = document.getElementById('player');
+        const playerTitle = document.getElementById('player-title');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+
+        const spotifyInput = document.getElementById('spotify-input');
+        const spotifyBtn = document.getElementById('spotify-btn');
+        const spotifyEmbed = document.getElementById('spotify-embed');
+
+        const twitchInput = document.getElementById('twitch-input');
+        const twitchBtn = document.getElementById('twitch-btn');
+        const twitchEmbed = document.getElementById('twitch-embed');
+
+        // ─── Bloxd proxy toggle ──────────────────────────────────────
+        const bloxdIframe = document.getElementById('bloxd-iframe');
+        const directBtn = document.getElementById('bloxd-direct-btn');
+        const proxyBtn = document.getElementById('bloxd-proxy-btn');
+
+        const DIRECT_URL = 'https://bloxd.io';
+        const PROXY_URL = 'https://corsproxy.io/?url=' + encodeURIComponent('https://bloxd.io');
+
+        function setBloxdMode(mode) {
+            if (mode === 'proxy') {
+                bloxdIframe.src = PROXY_URL;
+                directBtn.classList.remove('active');
+                proxyBtn.classList.add('active');
+            } else {
+                bloxdIframe.src = DIRECT_URL;
+                proxyBtn.classList.remove('active');
+                directBtn.classList.add('active');
+            }
         }
-      }
 
-      // ─── Proxy status update (visual only) ──────────────────────────
-      function updateProxyStatus() {
-        const val = proxySelect.value;
-        const labels = {
-          none: '● Direct',
-          'hide-me': '🔒 Hide.me',
-          'holy-unblocker': '🔒 Holy Unblocker',
-          ultraviolet: '🔒 Ultraviolet',
-          iproyal: '🔒 IPRoyal',
-          '4everproxy': '🔒 4everProxy',
-        };
-        proxyStatus.textContent = labels[val] || '● Direct';
-      }
-      proxySelect.addEventListener('change', updateProxyStatus);
-      updateProxyStatus();
+        directBtn.addEventListener('click', () => setBloxdMode('direct'));
+        proxyBtn.addEventListener('click', () => setBloxdMode('proxy'));
 
-      // ─── Event listeners ──────────────────────────────────────────────
+        // ─── state ──────────────────────────────────────────────────
+        let currentQuery = '';
+        let nextPageToken = '';
 
-      tabs.forEach((tab) => {
-        tab.addEventListener('click', function () {
-          switchTab(this.dataset.tab);
+        // ─── helpers ────────────────────────────────────────────────
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function showStatus(msg, type = '') {
+            results.innerHTML = `<div class="status ${type}">${msg}</div>`;
+        }
+
+        // ─── YouTube ────────────────────────────────────────────────
+        function appendCards(items) {
+            items.forEach(item => {
+                const videoId = item.id.videoId;
+                const title = item.snippet.title;
+                const channel = item.snippet.channelTitle;
+                const thumb = item.snippet.thumbnails.medium.url;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${thumb}" alt="" loading="lazy" />
+                    <div class="card-info">
+                        <p class="title">${escapeHtml(title)}</p>
+                        <p class="channel">${escapeHtml(channel)}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => playVideo(videoId, title));
+                results.appendChild(card);
+            });
+        }
+
+        async function runSearch(pageToken) {
+            const key = apiKeyInput.value.trim();
+            if (!key) {
+                showStatus('⚠️ Add your API key above first.', 'error');
+                loadMoreBtn.style.display = 'none';
+                return;
+            }
+
+            const url = new URL('https://www.googleapis.com/youtube/v3/search');
+            url.searchParams.set('part', 'snippet');
+            url.searchParams.set('type', 'video');
+            url.searchParams.set('maxResults', '50');
+            url.searchParams.set('q', currentQuery);
+            url.searchParams.set('key', key);
+            if (pageToken) url.searchParams.set('pageToken', pageToken);
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data.error) {
+                    showStatus(`❌ ${escapeHtml(data.error.message || 'Something went wrong.')}`, 'error');
+                    loadMoreBtn.style.display = 'none';
+                    return;
+                }
+
+                if (!data.items || data.items.length === 0) {
+                    if (!pageToken) showStatus('😕 No results found.', '');
+                    loadMoreBtn.style.display = 'none';
+                    return;
+                }
+
+                if (!pageToken) results.innerHTML = '';
+                appendCards(data.items);
+
+                nextPageToken = data.nextPageToken || '';
+                loadMoreBtn.style.display = nextPageToken ? 'inline-block' : 'none';
+            } catch (err) {
+                showStatus('❌ Request failed. Check your API key and try again.', 'error');
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+
+        function doSearch() {
+            const query = searchInput.value.trim();
+            if (!query) return;
+            currentQuery = query;
+            nextPageToken = '';
+            showStatus('⏳ Searching…', '');
+            loadMoreBtn.style.display = 'none';
+            runSearch();
+        }
+
+        function loadMore() {
+            if (!nextPageToken) return;
+            loadMoreBtn.textContent = '⏳ Loading…';
+            runSearch(nextPageToken).then(() => {
+                loadMoreBtn.textContent = 'Load more';
+            });
+        }
+
+        function playVideo(videoId, title) {
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            playerTitle.textContent = title;
+            playerArea.style.display = 'block';
+            playerArea.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ─── Spotify ────────────────────────────────────────────────
+        function loadSpotify() {
+            const raw = spotifyInput.value.trim();
+            if (!raw) {
+                spotifyEmbed.innerHTML = `<div class="embed-placeholder">📎 Paste a Spotify link first.</div>`;
+                return;
+            }
+
+            let id = '';
+            let type = 'track';
+
+            const match =
+                raw.match(/spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/) ||
+                raw.match(/spotify:([a-zA-Z0-9]+):([a-zA-Z0-9]+)/);
+
+            if (match) {
+                type = match[1];
+                id = match[2];
+            } else {
+                if (/^[a-zA-Z0-9]{22}$/.test(raw)) {
+                    id = raw;
+                    type = 'track';
+                } else {
+                    spotifyEmbed.innerHTML =
+                        `<div class="embed-placeholder">❌ Couldn't parse that link. Try a Spotify track, album, or playlist URL.</div>`;
+                    return;
+                }
+            }
+
+            const embedUrl = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
+            spotifyEmbed.innerHTML = `
+                <iframe src="${embedUrl}" width="100%" height="152" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <p style="font-size:12px; color:#666; margin-top:6px;">🎵 ${type.charAt(0).toUpperCase() + type.slice(1)} embedded — click play to listen.</p>
+            `;
+        }
+
+        // ─── Twitch ──────────────────────────────────────────────────
+        async function loadTwitch() {
+            const channel = twitchInput.value.trim().toLowerCase();
+
+            if (channel) {
+                if (!/^[a-zA-Z0-9_]{4,25}$/.test(channel)) {
+                    twitchEmbed.innerHTML =
+                        `<div class="embed-placeholder" style="color:#ff6b6b;">⚠️ Invalid channel name. Use only letters, numbers, underscores (4-25 chars).</div>`;
+                    return;
+                }
+                twitchEmbed.innerHTML = `
+                    <iframe src="https://player.twitch.tv/?channel=${encodeURIComponent(channel)}&parent=${encodeURIComponent(window.location.hostname)}" allowfullscreen></iframe>
+                    <p style="font-size:13px; color:#999; margin-top:6px;">🎮 Watching <strong>${escapeHtml(channel)}</strong> — <a href="https://twitch.tv/${encodeURIComponent(channel)}" target="_blank" style="color:#3ea6ff;">open in Twitch</a></p>
+                `;
+                return;
+            }
+
+            // No channel → show directory
+            twitchEmbed.innerHTML = `
+                <div style="background:#1a1a1a; border-radius:10px; padding:20px; text-align:center; border:1px solid #303030;">
+                    <p style="color:#999; margin-bottom:12px;">👀 Browse top live streams on Twitch</p>
+                    <a href="https://twitch.tv/directory" target="_blank" style="display:inline-block; padding:10px 24px; background:#6441a5; color:#fff; border-radius:24px; text-decoration:none; font-weight:600;">Open Twitch Directory</a>
+                    <p style="font-size:12px; color:#666; margin-top:12px;">Or enter a channel name above to embed a specific stream.</p>
+                </div>
+            `;
+        }
+
+        // ─── event bindings ──────────────────────────────────────────
+        searchBtn.addEventListener('click', doSearch);
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') doSearch();
         });
-      });
+        loadMoreBtn.addEventListener('click', loadMore);
 
-      function performSearch() {
-        const query = searchInput.value;
-        const results = searchGames(query);
-        renderGames(tabContents.search, results);
-        switchTab('search');
-      }
-      searchBtn.addEventListener('click', performSearch);
-      searchInput.addEventListener('keyup', function (e) {
-        if (e.key === 'Enter') performSearch();
-      });
+        spotifyBtn.addEventListener('click', loadSpotify);
+        spotifyInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loadSpotify();
+        });
 
-      // ─── Initial load ──────────────────────────────────────────────────
-      renderGames(tabContents.popular, GAMES);
-      renderGames(tabContents.action, getGamesByCategory('action'));
-      renderGames(tabContents.puzzle, getGamesByCategory('puzzle'));
-      renderGames(tabContents.sports, getGamesByCategory('sports'));
+        twitchBtn.addEventListener('click', loadTwitch);
+        twitchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loadTwitch();
+        });
 
-      console.log('🎮 Unblocked Games Hub ready – all games open in new tabs!');
-    })();
-  </script>
+        // ─── restore API key ────────────────────────────────────────
+        (function restoreKey() {
+            const saved = sessionStorage.getItem('yt_api_key');
+            if (saved) {
+                apiKeyInput.value = saved;
+            }
+            apiKeyInput.addEventListener('input', () => {
+                sessionStorage.setItem('yt_api_key', apiKeyInput.value.trim());
+            });
+        })();
+
+        console.log('🎬 YouTube Hub loaded — enjoy!');
+    </script>
+
 </body>
 </html>
