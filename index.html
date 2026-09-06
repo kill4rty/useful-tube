@@ -190,43 +190,12 @@
             background: #1a1a1a;
             border-radius: 10px;
             overflow: hidden;
-            position: relative;
         }
         .bloxd-wrapper iframe {
             border: none;
             display: block;
             width: 100%;
             height: 600px;
-        }
-        .bloxd-toolbar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-            background: #1a1a1a;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid #303030;
-        }
-        .bloxd-toolbar button {
-            background: #3ea6ff;
-            border: none;
-            color: #0f0f0f;
-            padding: 6px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-        .bloxd-toolbar button:hover {
-            background: #65b8ff;
-        }
-        .bloxd-toolbar .status-msg {
-            color: #aaa;
-            font-size: 13px;
-            margin-left: auto;
         }
         .bloxd-note {
             font-size: 12px;
@@ -262,14 +231,6 @@
             }
             .bloxd-wrapper iframe {
                 height: 400px;
-            }
-            .bloxd-toolbar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .bloxd-toolbar .status-msg {
-                margin-left: 0;
-                text-align: center;
             }
         }
     </style>
@@ -347,18 +308,14 @@
 
         <hr class="section-divider" />
 
-        <!-- BLOXD – with multiple proxy fallback -->
-        <h2 class="section-title">🧱 Bloxd (Unblocked)</h2>
-        <div class="bloxd-toolbar">
-            <button id="bloxd-next-btn">🔄 Try next proxy</button>
-            <span class="status-msg" id="bloxd-status">Loading proxy…</span>
-        </div>
+        <!-- BLOXD – direct iframe (no proxy) -->
+        <h2 class="section-title">🧱 Bloxd</h2>
         <div class="bloxd-wrapper">
-            <iframe id="bloxd-iframe" src="" allowfullscreen></iframe>
+            <iframe src="https://bloxd.io" allowfullscreen></iframe>
         </div>
         <p class="bloxd-note">
-            ⚠️ Uses a list of public Ultraviolet proxies. If the game doesn't load, click <strong>"Try next proxy"</strong> to cycle through them.
-            If none work, you may need to run your own proxy or use a VPN.
+            ⚠️ If the game doesn't load, it may be blocked by your network or the site itself.
+            <a href="https://bloxd.io" target="_blank">Click here to open Bloxd in a new tab</a>.
         </p>
 
     </div>
@@ -381,66 +338,6 @@
         const twitchInput = document.getElementById('twitch-input');
         const twitchBtn = document.getElementById('twitch-btn');
         const twitchEmbed = document.getElementById('twitch-embed');
-
-        // ─── Bloxd proxy cycling ─────────────────────────────────────
-        const bloxdIframe = document.getElementById('bloxd-iframe');
-        const bloxdNextBtn = document.getElementById('bloxd-next-btn');
-        const bloxdStatus = document.getElementById('bloxd-status');
-
-        const BLOXD_TARGET = 'https://bloxd.io';
-
-        // List of known working Ultraviolet proxies (add/remove as needed)
-        const PROXY_LIST = [
-            'https://uv.rudz.xyz/service/?url=',
-            'https://ultraviolet-proxy.sadzurami.ml/service/?url=',
-            'https://ultraviolet-proxy.jacoblin.xyz/service/?url=',
-            'https://uv-proxy.surge.sh/service/?url=',
-            'https://ultraviolet-snowy.vercel.app/service/?url=',
-        ];
-
-        let currentProxyIndex = -1; // will be incremented on load
-
-        function buildProxyUrl(base) {
-            // Ensure the target is appended correctly
-            let full;
-            if (base.includes('?url=') || base.includes('&url=')) {
-                if (base.endsWith('?url=') || base.endsWith('&url=')) {
-                    full = base + encodeURIComponent(BLOXD_TARGET);
-                } else {
-                    const sep = base.includes('?') ? '&' : '?';
-                    full = base + sep + 'url=' + encodeURIComponent(BLOXD_TARGET);
-                }
-            } else {
-                const sep = base.includes('?') ? '&' : '?';
-                full = base + sep + 'url=' + encodeURIComponent(BLOXD_TARGET);
-            }
-            return full;
-        }
-
-        function loadBloxdWithProxy(index) {
-            if (index >= PROXY_LIST.length) {
-                bloxdStatus.textContent = '❌ All proxies failed. Try again later.';
-                bloxdIframe.src = '';
-                return;
-            }
-            const proxyBase = PROXY_LIST[index];
-            const fullUrl = buildProxyUrl(proxyBase);
-            bloxdIframe.src = fullUrl;
-            bloxdStatus.textContent = `🔄 Trying proxy ${index+1}/${PROXY_LIST.length}...`;
-            currentProxyIndex = index;
-        }
-
-        function tryNextProxy() {
-            const next = currentProxyIndex + 1;
-            loadBloxdWithProxy(next);
-        }
-
-        // Initial load with first proxy
-        window.addEventListener('load', () => {
-            loadBloxdWithProxy(0);
-        });
-
-        bloxdNextBtn.addEventListener('click', tryNextProxy);
 
         // ─── state ──────────────────────────────────────────────────
         let currentQuery = '';
@@ -604,42 +501,5 @@
             twitchEmbed.innerHTML = `
                 <div style="background:#1a1a1a; border-radius:10px; padding:20px; text-align:center; border:1px solid #303030;">
                     <p style="color:#999; margin-bottom:12px;">👀 Browse top live streams on Twitch</p>
-                    <a href="https://twitch.tv/directory" target="_blank" style="display:inline-block; padding:10px 24px; background:#6441a5; color:#fff; border-radius:24px; text-decoration:none; font-weight:600;">Open Twitch Directory</a>
-                    <p style="font-size:12px; color:#666; margin-top:12px;">Or enter a channel name above to embed a specific stream.</p>
-                </div>
-            `;
-        }
-
-        // ─── event bindings ──────────────────────────────────────────
-        searchBtn.addEventListener('click', doSearch);
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') doSearch();
-        });
-        loadMoreBtn.addEventListener('click', loadMore);
-
-        spotifyBtn.addEventListener('click', loadSpotify);
-        spotifyInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loadSpotify();
-        });
-
-        twitchBtn.addEventListener('click', loadTwitch);
-        twitchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loadTwitch();
-        });
-
-        // ─── restore API key ────────────────────────────────────────
-        (function restoreKey() {
-            const saved = sessionStorage.getItem('yt_api_key');
-            if (saved) {
-                apiKeyInput.value = saved;
-            }
-            apiKeyInput.addEventListener('input', () => {
-                sessionStorage.setItem('yt_api_key', apiKeyInput.value.trim());
-            });
-        })();
-
-        console.log('🎬 YouTube Hub loaded — Bloxd uses proxy cycling.');
-    </script>
-
-</body>
-</html>
+                    <a href="https://twitch.tv/directory" target="_blank" style="display:inline-block; padding:10px 24px; background:#6441a5; color:#fff; border-radius:24px
+                
