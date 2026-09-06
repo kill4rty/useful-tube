@@ -209,16 +209,6 @@
             border-radius: 10px;
             border: 1px solid #303030;
         }
-        .bloxd-toolbar input {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 20px;
-            border: 1px solid #303030;
-            background: #121212;
-            color: #fff;
-            font-size: 13px;
-            min-width: 150px;
-        }
         .bloxd-toolbar button {
             background: #3ea6ff;
             border: none;
@@ -232,6 +222,11 @@
         }
         .bloxd-toolbar button:hover {
             background: #65b8ff;
+        }
+        .bloxd-toolbar .status-msg {
+            color: #aaa;
+            font-size: 13px;
+            margin-left: auto;
         }
         .bloxd-note {
             font-size: 12px;
@@ -272,8 +267,9 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            .bloxd-toolbar input {
-                width: 100%;
+            .bloxd-toolbar .status-msg {
+                margin-left: 0;
+                text-align: center;
             }
         }
     </style>
@@ -351,20 +347,18 @@
 
         <hr class="section-divider" />
 
-        <!-- BLOXD – with working proxy -->
-        <h2 class="section-title">🧱 Bloxd</h2>
+        <!-- BLOXD – with multiple proxy fallback -->
+        <h2 class="section-title">🧱 Bloxd (Unblocked)</h2>
         <div class="bloxd-toolbar">
-            <span style="color:#aaa; font-size:13px;">Ultraviolet proxy URL:</span>
-            <input type="text" id="bloxd-proxy-input" value="https://uv.rudz.xyz/service/?url=" placeholder="https://your-uv-instance/service/?url=" />
-            <button id="bloxd-load-btn">Load</button>
+            <button id="bloxd-next-btn">🔄 Try next proxy</button>
+            <span class="status-msg" id="bloxd-status">Loading proxy…</span>
         </div>
         <div class="bloxd-wrapper">
             <iframe id="bloxd-iframe" src="" allowfullscreen></iframe>
         </div>
         <p class="bloxd-note">
-            ⚠️ The iframe loads <strong>bloxd.io</strong> through the proxy above.
-            Default <code>https://uv.rudz.xyz/service/?url=</code> is known to work.
-            If it fails, try another public instance like <code>https://ultraviolet-proxy.sadzurami.ml/service/?url=</code>.
+            ⚠️ Uses a list of public Ultraviolet proxies. If the game doesn't load, click <strong>"Try next proxy"</strong> to cycle through them.
+            If none work, you may need to run your own proxy or use a VPN.
         </p>
 
     </div>
@@ -388,51 +382,65 @@
         const twitchBtn = document.getElementById('twitch-btn');
         const twitchEmbed = document.getElementById('twitch-embed');
 
-        // ─── Bloxd proxy ────────────────────────────────────────────
+        // ─── Bloxd proxy cycling ─────────────────────────────────────
         const bloxdIframe = document.getElementById('bloxd-iframe');
-        const bloxdProxyInput = document.getElementById('bloxd-proxy-input');
-        const bloxdLoadBtn = document.getElementById('bloxd-load-btn');
+        const bloxdNextBtn = document.getElementById('bloxd-next-btn');
+        const bloxdStatus = document.getElementById('bloxd-status');
 
         const BLOXD_TARGET = 'https://bloxd.io';
 
-        function loadBloxd() {
-            let proxyBase = bloxdProxyInput.value.trim();
-            if (!proxyBase) {
-                proxyBase = 'https://uv.rudz.xyz/service/?url=';
-                bloxdProxyInput.value = proxyBase;
-            }
+        // List of known working Ultraviolet proxies (add/remove as needed)
+        const PROXY_LIST = [
+            'https://uv.rudz.xyz/service/?url=',
+            'https://ultraviolet-proxy.sadzurami.ml/service/?url=',
+            'https://ultraviolet-proxy.jacoblin.xyz/service/?url=',
+            'https://uv-proxy.surge.sh/service/?url=',
+            'https://ultraviolet-snowy.vercel.app/service/?url=',
+        ];
 
-            // Ensure the proxy URL ends with a proper query for 'url'
-            // If it already contains 'url=' or '&url=', we just append the encoded target.
-            // Otherwise, we add ?url= or &url=
-            let fullUrl;
-            if (proxyBase.includes('?url=') || proxyBase.includes('&url=')) {
-                // Already has a url param; append encoded target (if not already there)
-                // We'll just append with & if needed, but we also need to handle if it ends with ?url= or &url=
-                if (proxyBase.endsWith('?url=') || proxyBase.endsWith('&url=')) {
-                    fullUrl = proxyBase + encodeURIComponent(BLOXD_TARGET);
+        let currentProxyIndex = -1; // will be incremented on load
+
+        function buildProxyUrl(base) {
+            // Ensure the target is appended correctly
+            let full;
+            if (base.includes('?url=') || base.includes('&url=')) {
+                if (base.endsWith('?url=') || base.endsWith('&url=')) {
+                    full = base + encodeURIComponent(BLOXD_TARGET);
                 } else {
-                    // Add &url= or ?url=
-                    const separator = proxyBase.includes('?') ? '&' : '?';
-                    fullUrl = proxyBase + separator + 'url=' + encodeURIComponent(BLOXD_TARGET);
+                    const sep = base.includes('?') ? '&' : '?';
+                    full = base + sep + 'url=' + encodeURIComponent(BLOXD_TARGET);
                 }
             } else {
-                // No url param at all
-                const separator = proxyBase.includes('?') ? '&' : '?';
-                fullUrl = proxyBase + separator + 'url=' + encodeURIComponent(BLOXD_TARGET);
+                const sep = base.includes('?') ? '&' : '?';
+                full = base + sep + 'url=' + encodeURIComponent(BLOXD_TARGET);
             }
-            bloxdIframe.src = fullUrl;
+            return full;
         }
 
-        bloxdLoadBtn.addEventListener('click', loadBloxd);
-        bloxdProxyInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loadBloxd();
+        function loadBloxdWithProxy(index) {
+            if (index >= PROXY_LIST.length) {
+                bloxdStatus.textContent = '❌ All proxies failed. Try again later.';
+                bloxdIframe.src = '';
+                return;
+            }
+            const proxyBase = PROXY_LIST[index];
+            const fullUrl = buildProxyUrl(proxyBase);
+            bloxdIframe.src = fullUrl;
+            bloxdStatus.textContent = `🔄 Trying proxy ${index+1}/${PROXY_LIST.length}...`;
+            currentProxyIndex = index;
+        }
+
+        function tryNextProxy() {
+            const next = currentProxyIndex + 1;
+            loadBloxdWithProxy(next);
+        }
+
+        // Initial load with first proxy
+        window.addEventListener('load', () => {
+            loadBloxdWithProxy(0);
         });
 
-        // Load initially
-        window.addEventListener('load', () => {
-            loadBloxd();
-        });
+        bloxdNextBtn.addEventListener('click', tryNextProxy);
 
         // ─── state ──────────────────────────────────────────────────
         let currentQuery = '';
@@ -630,7 +638,7 @@
             });
         })();
 
-        console.log('🎬 YouTube Hub loaded — Bloxd uses Ultraviolet proxy.');
+        console.log('🎬 YouTube Hub loaded — Bloxd uses proxy cycling.');
     </script>
 
 </body>
