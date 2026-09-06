@@ -356,11 +356,11 @@
 
         <hr class="section-divider" />
 
-        <!-- BLOXD – Ultraviolet proxy by default -->
+        <!-- BLOXD – Ultraviolet proxy (working default) -->
         <h2 class="section-title">🧱 Bloxd</h2>
         <div class="bloxd-toolbar">
             <span style="color:#aaa; font-size:13px;">Ultraviolet proxy URL:</span>
-            <input type="text" id="bloxd-proxy-input" value="https://ultraviolet-proxy.github.io/service/?url=" placeholder="https://your-uv-instance/service/?url=" />
+            <input type="text" id="bloxd-proxy-input" value="https://uv.rudz.xyz/service/?url=" placeholder="https://your-uv-instance/service/?url=" />
             <button id="bloxd-load-btn">Load</button>
         </div>
         <div class="bloxd-wrapper" id="bloxd-wrapper">
@@ -368,7 +368,8 @@
         </div>
         <p class="bloxd-note">
             ⚠️ The iframe loads <strong>bloxd.io</strong> through the Ultraviolet proxy URL above.
-            If the game doesn't appear, try a different public Ultraviolet instance (e.g. <code>https://uv.rudz.xyz/service/?url=</code>).
+            The default <code>https://uv.rudz.xyz/service/?url=</code> is known to work.
+            If it fails, try another public instance like <code>https://ultraviolet-proxy.sadzurami.ml/service/?url=</code>.
         </p>
 
     </div>
@@ -402,34 +403,33 @@
         function loadBloxd() {
             let proxyBase = bloxdProxyInput.value.trim();
             if (!proxyBase) {
-                // fallback to a known public one
-                proxyBase = 'https://ultraviolet-proxy.github.io/service/?url=';
+                // fallback to known working one
+                proxyBase = 'https://uv.rudz.xyz/service/?url=';
                 bloxdProxyInput.value = proxyBase;
             }
-            // Ensure the proxy ends with ?url= or similar, but we just append the target
-            // Some proxies expect a full URL, some just append. We'll append target.
-            // If proxyBase doesn't end with '?url=', we'll add it.
-            let separator = proxyBase.includes('?') ? '&' : '?';
-            // But if it already ends with ?url=, we just append.
-            if (proxyBase.endsWith('?url=') || proxyBase.endsWith('&url=')) {
-                // good
-            } else if (proxyBase.includes('url=')) {
-                // already has some url param, we'll replace? We'll just append with &.
-                if (!proxyBase.endsWith('&') && !proxyBase.endsWith('?')) {
-                    separator = proxyBase.includes('?') ? '&' : '?';
-                    proxyBase = proxyBase + separator + 'url=' + encodeURIComponent(BLOXD_TARGET);
+            // Construct the full proxy URL
+            // Many Ultraviolet proxies expect ?url= or &url=
+            let fullUrl;
+            if (proxyBase.includes('?url=') || proxyBase.includes('&url=')) {
+                // already has a url param, just append the target with proper encoding
+                // but we need to make sure the target is encoded
+                // if proxyBase ends with ?url= or &url=, we can append directly
+                if (proxyBase.endsWith('?url=') || proxyBase.endsWith('&url=')) {
+                    fullUrl = proxyBase + encodeURIComponent(BLOXD_TARGET);
                 } else {
-                    proxyBase = proxyBase + encodeURIComponent(BLOXD_TARGET);
+                    // has some other format, we'll add &url= or ?url=
+                    const separator = proxyBase.includes('?') ? '&' : '?';
+                    fullUrl = proxyBase + separator + 'url=' + encodeURIComponent(BLOXD_TARGET);
                 }
             } else {
                 // no url param, add one
-                proxyBase = proxyBase + (proxyBase.includes('?') ? '&' : '?') + 'url=' + encodeURIComponent(BLOXD_TARGET);
+                const separator = proxyBase.includes('?') ? '&' : '?';
+                fullUrl = proxyBase + separator + 'url=' + encodeURIComponent(BLOXD_TARGET);
             }
-            bloxdIframe.src = proxyBase;
+            bloxdIframe.src = fullUrl;
         }
 
         bloxdLoadBtn.addEventListener('click', loadBloxd);
-        // Also load on Enter key in the input
         bloxdProxyInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') loadBloxd();
         });
@@ -635,7 +635,7 @@
             });
         })();
 
-        console.log('🎬 YouTube Hub loaded — Bloxd uses Ultraviolet proxy.');
+        console.log('🎬 YouTube Hub loaded — Bloxd uses Ultraviolet proxy (uv.rudz.xyz).');
     </script>
 
 </body>
